@@ -20,12 +20,12 @@ public class Convolution implements PixelFilter {
         short[][] green = img.getGreenChannel();
         short[][] blue = img.getBlueChannel();
 
-        red = doSobel(red, Gx, Gy);
-        green = doSobel(green, Gx, Gy);
-        blue = doSobel(blue, Gx, Gy);
-
-
-
+//        red = doSobel(red, Gx, Gy);
+//        green = doSobel(green, Gx, Gy);
+//        blue = doSobel(blue, Gx, Gy);
+        red = doConvolution(red, GaussianBlur);
+        green = doConvolution(green,GaussianBlur);
+        blue = doConvolution(blue, GaussianBlur);
         img.setColorChannels(red, green, blue);
         return img;
     }

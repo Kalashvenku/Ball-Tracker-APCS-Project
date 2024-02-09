@@ -1,9 +1,29 @@
 package Filters;
 
+import Interfaces.Interactive;
 import Interfaces.PixelFilter;
 import core.DImage;
 
-public class ColorMask implements PixelFilter {
+public class ColorMask implements PixelFilter, Interactive {
+    private int threshold;
+    short[][] targetColors;
+    Convolution blur = new Convolution();
+
+    public ColorMask(){
+        threshold = 30;
+        targetColors = new short[3][3];
+        targetColors[0][0] = 61;
+        targetColors[0][1] = 121;
+        targetColors[0][2] = 54;
+        targetColors[1][0] = 20;
+        targetColors[1][1] = 43;
+        targetColors[1][2] = 139;
+        targetColors[2][0] = 213;
+        targetColors[2][1] = 175;
+        targetColors[2][2] = 47;
+    }
+
+
     @Override
     public DImage processImage(DImage img) {
         System.out.println(threshold);
@@ -11,11 +31,10 @@ public class ColorMask implements PixelFilter {
         short[][] red = img.getRedChannel();
         short[][] green = img.getGreenChannel();
         short[][] blue = img.getBlueChannel();
-        short[] targetRGB = new short[3];
-        targetRGB[0] = 30;
-        targetRGB[1] = 255;
-        targetRGB[2] = 30;
-        double distanceThreshold = 175;
+        short[][] newRed = new short[red.length][red[0].length];
+        short[][] newGreen = new short[red.length][red[0].length];
+        short[][] newBlue = new short[blue.length][blue[0].length];
+
         for (int r = 0; r < red.length; r++) {
             for (int c = 0; c < red[0].length; c++) {
                 for (int color = 0; color < targetColors.length; color++) {
