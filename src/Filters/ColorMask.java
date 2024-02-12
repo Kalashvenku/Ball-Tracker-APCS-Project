@@ -43,9 +43,9 @@ public class ColorMask implements PixelFilter, Interactive {
                     int blueDistance = Math.abs(targetColors[color][2] - blue[r][c]);
                     double distance = Math.sqrt(Math.pow(redDistance, 2) + Math.pow(greenDistance, 2) + Math.pow(blueDistance, 2));
                     if (distance < threshold){
-                        newRed[r][c] = (short) (255 - color);
-                        newGreen[r][c] = (short) (255 - color);
-                        newBlue[r][c] = (short )(255 - color);
+                        newRed[r][c] = (short) (255);
+                        newGreen[r][c] = (short) (255);
+                        newBlue[r][c] = (short )(255);
                     }
                 }
             }

@@ -8,7 +8,7 @@ public class FixedThresholdFilter implements PixelFilter, Interactive {
     private int threshold;
 
     public FixedThresholdFilter() {
-        threshold = 127;
+        threshold = 200;
     }
 
     @Override
