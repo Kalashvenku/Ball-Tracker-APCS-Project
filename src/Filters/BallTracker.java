@@ -17,7 +17,15 @@ public class BallTracker implements PixelFilter {
         originalImage = new DImage(img);
 
         short[][] grid = img.getBWPixelGrid();
-        ArrayList<Coordinate> centers = new ArrayList<>();
+        ArrayList<Coordinate> allWhitePixels = getAllWhite(grid);
+        ArrayList<Coordinate> centers = findCenters(grid, allWhitePixels);
+
+        /*
+        List<Coordinate> allWhite = getAllWhite(grid);
+
+        Location randWhitePixel = findRandomWhitePixel(grid);
+         */
+
         //find random white pixel
 
 
