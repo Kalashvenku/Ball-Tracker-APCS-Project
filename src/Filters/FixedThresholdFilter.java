@@ -7,8 +7,8 @@ import core.*;
 public class FixedThresholdFilter implements PixelFilter, Interactive {
     private int threshold;
 
-    public FixedThresholdFilter() {
-        threshold = 200;
+    public FixedThresholdFilter(int threshold) {
+        this.threshold = threshold;
     }
 
     @Override
