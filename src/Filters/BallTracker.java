@@ -14,29 +14,51 @@ public class BallTracker implements PixelFilter {
 
     @Override
     public DImage processImage(DImage img) {
-//        originalImage = new DImage(img);
-//        detectColors.processImage(img);
-//        blur.processImage(img);
-//        threshold.processImage(img); creating and cleaning color mask ADD BACK IN LATER
+        originalImage = new DImage(img);
+
         short[][] grid = img.getBWPixelGrid();
         ArrayList<Coordinate> centers = new ArrayList<>();
         //find random white pixel
-        int x = (int) (Math.random() * grid.length);
-        int y = (int) (Math.random() * grid[0].length);
-        while (grid[x][y] != 255) {
-            x = (int) (Math.random() * grid.length);
-            y = (int) (Math.random() * grid[0].length);
+
+
+        for (Coordinate center : centers) {
+            for (int r = center.x - 5; r < center.x + 5; r++) {
+                for (int c = center.y - 5; c < center.y; c++) {
+                    grid[r][c] = 255;
+                }
+            }
         }
-        centers.add(findCenter(grid, x, y));
         //with random white pixel loop over a rectangular region around your pixel if no black pixel enlarge region
         //if black pixel find average cords of white pixels
-
 
 
         img.setPixels(grid);
         return img;
     }
-    public Coordinate findCenter(short[][] grid, int x, int y){
+
+    private ArrayList<Coordinate> findCenters(short[][] grid, ArrayList<Coordinate> allWhitePixels) {
+        //get random white pixel
+        ArrayList<Coordinate> centers = new ArrayList<>();
+        Coordinate whitePixel;
+        whitePixel = allWhitePixels.get((int) (Math.random() * allWhitePixels.size()));
+        //use findcenter() method
+        centers.add(findCenter(grid, whitePixel.x, whitePixel.y, allWhitePixels));
+        return centers;
+    }
+
+    private ArrayList<Coordinate> getAllWhite(short[][] grid) {
+        ArrayList<Coordinate> allWhite = new ArrayList<>();
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++){
+                if (grid[r][c] == 255){
+                    allWhite.add(new Coordinate(r, c));
+                }
+            }
+        }
+        return allWhite;
+    }
+
+    public Coordinate findCenter(short[][] grid, int x, int y, ArrayList<Coordinate> allWhitePixels) {
         int regionRadius = 4;
         boolean exit = false;
         boolean blackFound = false;
@@ -44,7 +66,8 @@ public class BallTracker implements PixelFilter {
         int averageY = 0;
         int whitePixels = 0;
         boolean done = false;
-        while(!done) {
+        ArrayList<Coordinate> deletedCoords = new ArrayList<>();
+        while (!done) {
             for (int r = x - regionRadius; r < x + regionRadius; r++) {
                 for (int c = x - regionRadius; c < x + regionRadius; c++) {
                     if (grid[r][c] == 255) {
@@ -62,11 +85,24 @@ public class BallTracker implements PixelFilter {
                 averageX /= whitePixels;
                 averageY /= whitePixels;
             }
-            if (averageX == x && averageY == y){
+            if (averageX == x && averageY == y) {
                 done = true;
             }
             x = averageX;
             y = averageY;
+        }
+        for (int r = x - regionRadius; r < x + regionRadius; r++) {
+            for (int c = x - regionRadius; c < x + regionRadius; c++) {
+                grid[r][c] = 0;
+                for (int i = 0; i < allWhitePixels.size(); i++){
+                    if (allWhitePixels.get(i).x == r && allWhitePixels.get(i).y == c){
+                        deletedCoords.add(allWhitePixels.get(i));
+                    }
+                }
+            }
+        }
+        for (Coordinate coord : deletedCoords){
+            allWhitePixels.remove(coord);
         }
         return new Coordinate(x, y);
     }
