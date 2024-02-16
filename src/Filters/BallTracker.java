@@ -89,9 +89,10 @@ public class BallTracker implements PixelFilter {
                 regionRadius++;
                 averageX /= whitePixels;
                 averageY /= whitePixels;
-            }
-            if (averageX == x && averageY == y) {
-                done = true;
+
+                if (averageX == x && averageY == y) {
+                    done = true;
+                }
             }
             x = averageX;
             y = averageY;
