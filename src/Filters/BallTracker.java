@@ -2,8 +2,6 @@ package Filters;
 
 import Interfaces.PixelFilter;
 import core.DImage;
-
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class BallTracker implements PixelFilter {
@@ -68,7 +66,6 @@ public class BallTracker implements PixelFilter {
 
     public Coordinate findCenter(short[][] grid, int x, int y, ArrayList<Coordinate> allWhitePixels) {
         int regionRadius = 4;
-        boolean exit = false;
         boolean blackFound = false;
         int averageX = 0;
         int averageY = 0;
@@ -84,12 +81,12 @@ public class BallTracker implements PixelFilter {
                         whitePixels++;
                     }
                     if (grid[r][c] == 0) {
-                        regionRadius++;
                         blackFound = true;
                     }
                 }
             }
             if (blackFound) {
+                regionRadius++;
                 averageX /= whitePixels;
                 averageY /= whitePixels;
             }
