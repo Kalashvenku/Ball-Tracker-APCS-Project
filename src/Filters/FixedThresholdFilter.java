@@ -10,6 +10,9 @@ public class FixedThresholdFilter implements PixelFilter, Interactive {
     public FixedThresholdFilter(int threshold) {
         this.threshold = threshold;
     }
+    public FixedThresholdFilter(){
+        this.threshold = 200;
+    }
 
     @Override
     public DImage processImage(DImage img) {
